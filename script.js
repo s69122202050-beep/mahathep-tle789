@@ -1,798 +1,820 @@
-/* =========================================
-   MAHATHEP TEAL789
-   DURian Shop + Set Theory + Boolean Logic
-========================================= */
+```css
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+html {
+    scroll-behavior: smooth;
+}
 
-/* =========================================
-   PRODUCT DATA
-========================================= */
-
-const products = [
-
-    {
-        id: 1,
-        name: "หมอนทอง",
-        type: "เกรดพรีเมียม",
-        weight: "2-3 กก.",
-        weightNumber: 3,
-        price: 450,
-        discount: 5,
-        emoji: "🥭",
-        recommended: true,
-        inStock: true
-    },
-
-    {
-        id: 2,
-        name: "หมอนทอง",
-        type: "ลูกใหญ่พิเศษ",
-        weight: "4-5 กก.",
-        weightNumber: 5,
-        price: 750,
-        discount: 10,
-        emoji: "🥭",
-        recommended: true,
-        inStock: true
-    },
-
-    {
-        id: 3,
-        name: "ก้านยาว",
-        type: "หอมหวาน",
-        weight: "2-3 กก.",
-        weightNumber: 3,
-        price: 550,
-        discount: 5,
-        emoji: "🥭",
-        recommended: true,
-        inStock: true
-    },
-
-    {
-        id: 4,
-        name: "ชะนี",
-        type: "เนื้อนุ่ม",
-        weight: "3-4 กก.",
-        weightNumber: 4,
-        price: 480,
-        discount: 8,
-        emoji: "🥭",
-        recommended: false,
-        inStock: true
-    },
-
-    {
-        id: 5,
-        name: "พวงมณี",
-        type: "หวานมัน",
-        weight: "1-2 กก.",
-        weightNumber: 2,
-        price: 350,
-        discount: 5,
-        emoji: "🥭",
-        recommended: true,
-        inStock: true
-    },
-
-    {
-        id: 6,
-        name: "กระดุม",
-        type: "ลูกเล็กหวานมัน",
-        weight: "1-2 กก.",
-        weightNumber: 2,
-        price: 300,
-        discount: 0,
-        emoji: "🥭",
-        recommended: false,
-        inStock: true
-    }
-
-];
-
-
-/* =========================================
-   CART
-========================================= */
-
-let cart = [];
-
-
-/* =========================================
-   DISPLAY PRODUCTS
-========================================= */
-
-function displayProducts() {
-
-    const productList =
-        document.getElementById("productList");
-
-    productList.innerHTML = "";
-
-    products.forEach(product => {
-
-        const discountText =
-            product.discount > 0
-                ? `<span class="discount">
-                    ลด ${product.discount}%
-                   </span>`
-                : "";
-
-        const recommendText =
-            product.recommended
-                ? " ⭐ แนะนำ"
-                : "";
-
-        const card = document.createElement("div");
-
-        card.className = "product-card";
-
-        card.innerHTML = `
-
-            <div class="product-image">
-                ${product.emoji}
-            </div>
-
-            <div class="product-info">
-
-                <h3>
-                    ${product.name}
-                    ${recommendText}
-                </h3>
-
-                <p class="product-type">
-                    ${product.type}
-                </p>
-
-                <div class="product-meta">
-
-                    <span>
-                        ⚖️ ${product.weight}
-                    </span>
-
-                    <span>
-                        ${product.inStock
-                            ? "🟢 มีสินค้า"
-                            : "🔴 หมด"}
-                    </span>
-
-                </div>
-
-                <div class="product-price">
-
-                    <span class="price">
-                        ${formatMoney(product.price)} บาท
-                    </span>
-
-                    ${discountText}
-
-                </div>
-
-                <button
-                    class="add-cart"
-                    onclick="addToCart(${product.id})"
-                    ${!product.inStock ? "disabled" : ""}
-                >
-                    🛒 เพิ่มลงตะกร้า
-                </button>
-
-            </div>
-
-        `;
-
-        productList.appendChild(card);
-
-    });
-
+body {
+    font-family: "Tahoma", "Arial", sans-serif;
+    background: #f6f8ef;
+    color: #26351f;
+    line-height: 1.7;
 }
 
 
-/* =========================================
-   ADD TO CART
-========================================= */
+/* ================= HEADER ================= */
 
-function addToCart(productId) {
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 
-    const product =
-        products.find(p => p.id === productId);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    if (!product) {
-        return;
-    }
+    padding: 12px 6%;
 
-    const existing =
-        cart.find(item => item.id === productId);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.08);
+}
 
-    if (existing) {
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
 
-        existing.quantity++;
+.logo {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
 
-    } else {
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        cart.push({
-            ...product,
-            quantity: 1
-        });
+.brand-text h1 {
+    font-size: 22px;
+    color: #31551c;
+}
 
-    }
+.brand-text p {
+    font-size: 13px;
+    color: #777;
+}
 
-    updateCart();
+nav {
+    display: flex;
+    gap: 25px;
+}
 
-    alert(
-        `เพิ่ม ${product.name} ${product.weight} ลงตะกร้าแล้ว 🥭`
-    );
+nav a {
+    text-decoration: none;
+    color: #304329;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #8b6508;
 }
 
 
-/* =========================================
-   REMOVE FROM CART
-========================================= */
+/* ================= HERO ================= */
 
-function removeFromCart(productId) {
+.hero {
+    min-height: 650px;
 
-    cart =
-        cart.filter(item => item.id !== productId);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    updateCart();
+    padding: 70px 8%;
 
-}
-
-
-/* =========================================
-   CHANGE QUANTITY
-========================================= */
-
-function changeQuantity(productId, amount) {
-
-    const item =
-        cart.find(item => item.id === productId);
-
-    if (!item) {
-        return;
-    }
-
-    item.quantity += amount;
-
-    if (item.quantity <= 0) {
-
-        removeFromCart(productId);
-
-        return;
-    }
-
-    updateCart();
-}
-
-
-/* =========================================
-   UPDATE CART
-========================================= */
-
-function updateCart() {
-
-    const cartItems =
-        document.getElementById("cartItems");
-
-    if (cart.length === 0) {
-
-        cartItems.innerHTML = `
-            <p class="empty-cart">
-                🛒 ยังไม่มีสินค้าในตะกร้า
-            </p>
-        `;
-
-        updateSummary();
-
-        return;
-    }
-
-
-    cartItems.innerHTML = "";
-
-    cart.forEach(item => {
-
-        const itemElement =
-            document.createElement("div");
-
-        itemElement.className = "cart-item";
-
-        itemElement.innerHTML = `
-
-            <div>
-
-                <h4>
-                    ${item.emoji}
-                    ${item.name}
-                </h4>
-
-                <small>
-                    ${item.weight}
-                    × ${item.quantity}
-                </small>
-
-            </div>
-
-
-            <div class="cart-actions">
-
-                <button
-                    onclick="changeQuantity(${item.id}, -1)"
-                >
-                    −
-                </button>
-
-                <strong>
-                    ${item.quantity}
-                </strong>
-
-                <button
-                    onclick="changeQuantity(${item.id}, 1)"
-                >
-                    +
-                </button>
-
-                <button
-                    class="remove-btn"
-                    onclick="removeFromCart(${item.id})"
-                >
-                    ×
-                </button>
-
-            </div>
-
-        `;
-
-        cartItems.appendChild(itemElement);
-
-    });
-
-
-    updateSummary();
-}
-
-
-/* =========================================
-   SUMMARY
-========================================= */
-
-function updateSummary() {
-
-    let subtotal = 0;
-
-    let discount = 0;
-
-
-    cart.forEach(item => {
-
-        const itemSubtotal =
-            item.price * item.quantity;
-
-        subtotal += itemSubtotal;
-
-
-        /*
-            IF / ELSE
-            ถ้าซื้อ 2 ชิ้นขึ้นไป
-            เพิ่มส่วนลดอีก 5%
-        */
-
-        let discountRate =
-            item.discount;
-
-        if (item.quantity >= 2) {
-
-            discountRate += 5;
-
-        } else {
-
-            discountRate =
-                item.discount;
-
-        }
-
-
-        discount +=
-            itemSubtotal * discountRate / 100;
-
-    });
-
-
-    const total =
-        subtotal - discount;
-
-
-    document.getElementById("subtotal")
-        .textContent =
-        `${formatMoney(subtotal)} บาท`;
-
-
-    document.getElementById("discount")
-        .textContent =
-        `-${formatMoney(discount)} บาท`;
-
-
-    document.getElementById("total")
-        .textContent =
-        `${formatMoney(total)} บาท`;
-
-}
-
-
-/* =========================================
-   FORMAT MONEY
-========================================= */
-
-function formatMoney(number) {
-
-    return Number(number).toLocaleString("th-TH", {
-        maximumFractionDigits: 2
-    });
-
-}
-
-
-/* =========================================
-   SET THEORY
-========================================= */
-
-
-/*
-    SET A
-    = สินค้าทั้งหมด
-
-    SET B
-    = สินค้าที่มีส่วนลด
-*/
-
-function createSets() {
-
-    const setA =
-        products.map(product => product.name);
-
-    const setB =
-        products
-            .filter(product => product.discount > 0)
-            .map(product => product.name);
-
-
-    document.getElementById("setA")
-        .textContent =
-        `{ ${[...new Set(setA)].join(", ")} }`;
-
-
-    document.getElementById("setB")
-        .textContent =
-        `{ ${[...new Set(setB)].join(", ")} }`;
-
-}
-
-
-/* =========================================
-   SET OPERATION
-========================================= */
-
-function setOperation(operation) {
-
-    const A =
-        products.map(product => product.name);
-
-    const B =
-        products
-            .filter(product => product.discount > 0)
-            .map(product => product.name);
-
-
-    const uniqueA =
-        [...new Set(A)];
-
-    const uniqueB =
-        [...new Set(B)];
-
-
-    let result = [];
-
-
-    /*
-        A ∩ B
-        Intersection
-        สมาชิกที่อยู่ใน A และ B
-    */
-
-    if (operation === "AND") {
-
-        result =
-            uniqueA.filter(
-                item => uniqueB.includes(item)
-            );
-
-    }
-
-
-    /*
-        A ∪ B
-        Union
-        รวมสมาชิกของ A และ B
-    */
-
-    else if (operation === "OR") {
-
-        result =
-            [...new Set([
-                ...uniqueA,
-                ...uniqueB
-            ])];
-
-    }
-
-
-    /*
-        NOT A
-        ในตัวอย่างนี้ใช้
-        A - B
-
-        คือสมาชิกที่อยู่ใน A
-        แต่ไม่อยู่ใน B
-    */
-
-    else if (operation === "NOT") {
-
-        result =
-            uniqueA.filter(
-                item => !uniqueB.includes(item)
-            );
-
-    }
-
-
-    const symbol =
-        operation === "AND"
-            ? "A ∩ B"
-            : operation === "OR"
-                ? "A ∪ B"
-                : "A - B";
-
-
-    document.getElementById("logicResult")
-        .innerHTML = `
-
-            <strong>${symbol}</strong>
-
-            <br><br>
-
-            { ${result.join(", ")} }
-
-            <br><br>
-
-            จำนวนสมาชิก =
-            ${result.length}
-
-        `;
-
-}
-
-
-/* =========================================
-   BOOLEAN LOGIC
-========================================= */
-
-function booleanOperation(operation) {
-
-    const A =
-        document.getElementById("booleanA").checked;
-
-    const B =
-        document.getElementById("booleanB").checked;
-
-
-    let result;
-
-
-    /*
-        AND
-        จริงเมื่อ A และ B เป็นจริงทั้งคู่
-    */
-
-    if (operation === "AND") {
-
-        result = A && B;
-
-    }
-
-
-    /*
-        OR
-        จริงเมื่อ A หรือ B อย่างน้อยหนึ่งตัวเป็นจริง
-    */
-
-    else if (operation === "OR") {
-
-        result = A || B;
-
-    }
-
-
-    /*
-        NOT
-        กลับค่าของ A
-    */
-
-    else if (operation === "NOT") {
-
-        result = !A;
-
-    }
-
-
-    const text =
-        result ? "TRUE ✅" : "FALSE ❌";
-
-
-    document.getElementById("booleanResult")
-        .innerHTML = `
-
-            Operation:
-            <strong>${operation}</strong>
-
-            <br><br>
-
-            A = ${A}
-
-            <br>
-
-            B = ${B}
-
-            <br><br>
-
-            ผลลัพธ์ =
-            <strong>${text}</strong>
-
-        `;
-
-}
-
-
-/* =========================================
-   IF / ELSE
-========================================= */
-
-function checkDiscount() {
-
-    const quantity =
-        Number(
-            document.getElementById(
-                "quantityInput"
-            ).value
+    background:
+        linear-gradient(
+            135deg,
+            #edf6d7,
+            #fffde9
         );
+}
 
+.hero-content {
+    width: 48%;
+}
 
-    let message;
+.badge {
+    display: inline-block;
 
+    padding: 8px 18px;
 
-    /*
-        IF / ELSE
+    background: #dbeebc;
+    color: #3b641e;
 
-        ถ้าซื้อ >= 5
-        ลด 15%
+    border-radius: 30px;
 
-        ถ้าซื้อ >= 2
-        ลด 10%
+    font-weight: bold;
+    margin-bottom: 20px;
+}
 
-        ถ้าน้อยกว่า 2
-        ลด 0%
-    */
+.hero h2 {
+    font-size: clamp(40px, 5vw, 70px);
+    line-height: 1.15;
+    color: #294516;
+    margin-bottom: 20px;
+}
 
-    if (quantity >= 5) {
+.hero h2 span {
+    color: #bd8b08;
+}
 
-        message = `
-            🎉 ซื้อ ${quantity} ลูก
+.hero-content p {
+    font-size: 18px;
+    color: #58634f;
+    margin-bottom: 30px;
+}
 
-            <br><br>
+.btn {
+    display: inline-block;
 
-            <strong>
-                ได้ส่วนลด 15%
-            </strong>
+    padding: 13px 25px;
 
-            <br>
+    background: #315b20;
+    color: white;
 
-            โปรโมชั่นลูกค้าซื้อจำนวนมาก
-        `;
+    border-radius: 30px;
 
-    }
+    text-decoration: none;
+    font-weight: bold;
 
-    else if (quantity >= 2) {
+    box-shadow: 0 8px 20px rgba(49, 91, 32, 0.25);
 
-        message = `
-            🥭 ซื้อ ${quantity} ลูก
+    transition: 0.3s;
+}
 
-            <br><br>
-
-            <strong>
-                ได้ส่วนลด 10%
-            </strong>
-        `;
-
-    }
-
-    else if (quantity === 1) {
-
-        message = `
-            🥭 ซื้อ 1 ลูก
-
-            <br><br>
-
-            ยังไม่ได้รับส่วนลดพิเศษ
-
-            <br>
-
-            💡 ซื้อเพิ่มเป็น 2 ลูก
-            เพื่อรับส่วนลด
-        `;
-
-    }
-
-    else {
-
-        message = `
-            ⚠️ กรุณาระบุจำนวนสินค้า
-        `;
-
-    }
-
-
-    document.getElementById("ifElseResult")
-        .innerHTML = message;
-
+.btn:hover {
+    transform: translateY(-3px);
+    background: #456f2d;
 }
 
 
-/* =========================================
-   CHECKOUT
-========================================= */
+/* ================= HERO FRUIT ================= */
 
-function checkout() {
+.hero-fruit {
+    width: 48%;
 
-    if (cart.length === 0) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        alert(
-            "กรุณาเลือกสินค้าก่อนสั่งซื้อ 🛒"
-        );
+.hero-fruit img {
+    width: 100%;
+    max-width: 560px;
 
-        return;
-    }
+    height: auto;
 
+    object-fit: contain;
 
-    let total = 0;
+    filter:
+        drop-shadow(0 25px 25px rgba(0, 0, 0, 0.25));
 
-    cart.forEach(item => {
+    transition: transform 0.4s ease;
+}
 
-        total +=
-            item.price * item.quantity;
-
-    });
-
-
-    alert(
-        `ขอบคุณที่สั่งซื้อจาก มหาเทพเติ้ล789 🌳\n\n` +
-        `ยอดสินค้าเบื้องต้น ${formatMoney(total)} บาท\n\n` +
-        `นี่เป็นระบบตัวอย่างสำหรับโปรเจกต์เว็บไซต์`
-    );
-
+.hero-fruit img:hover {
+    transform: scale(1.04) rotate(1deg);
 }
 
 
-/* =========================================
-   START WEBSITE
-========================================= */
+/* ================= SECTION ================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+.section,
+.logic-section,
+.cart-section {
+    padding: 90px 7%;
+}
 
-        displayProducts();
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
 
-        createSets();
+.section-title span {
+    color: #a57c12;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 13px;
+}
 
-        updateCart();
+.section-title h2 {
+    font-size: 36px;
+    color: #304a22;
+    margin: 8px 0;
+}
 
+.section-title p {
+    color: #777;
+}
+
+
+/* ================= PRODUCTS ================= */
+
+.product-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
+
+    gap: 25px;
+}
+
+.product-card {
+    background: white;
+
+    border-radius: 22px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.08);
+
+    transition: 0.3s;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+}
+
+.product-image {
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #f3f7e7;
+
+    border-radius: 18px;
+
+    margin-bottom: 18px;
+
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+.product-card h3 {
+    color: #304a22;
+    margin-bottom: 5px;
+}
+
+.product-card p {
+    color: #777;
+    font-size: 14px;
+}
+
+.price {
+    color: #bd8b08;
+    font-size: 22px;
+    font-weight: bold;
+
+    margin: 10px 0;
+}
+
+.discount-badge {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    padding: 5px 10px;
+
+    background: #d94d35;
+    color: white;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.add-btn {
+    width: 100%;
+
+    padding: 11px;
+
+    border: none;
+
+    background: #315b20;
+    color: white;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.add-btn:hover {
+    background: #4c742f;
+}
+
+
+/* ================= LOGIC ================= */
+
+.logic-section {
+    background: #edf3df;
+}
+
+.logic-container {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    margin-bottom: 30px;
+}
+
+.logic-card,
+.operation-box,
+.boolean-box,
+.ifelse-box {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 7px 25px rgba(0, 0, 0, 0.07);
+
+    margin-bottom: 25px;
+}
+
+.logic-card h3,
+.operation-box h3,
+.boolean-box h3,
+.ifelse-box h3 {
+    color: #315b20;
+    margin-bottom: 8px;
+}
+
+.set-box {
+    margin-top: 15px;
+
+    min-height: 80px;
+
+    padding: 15px;
+
+    background: #f2f6e8;
+
+    border-radius: 12px;
+
+    color: #526442;
+}
+
+
+/* ================= OPERATION ================= */
+
+.operation-buttons,
+.boolean-buttons {
+    display: flex;
+    gap: 12px;
+
+    margin: 20px 0;
+
+    flex-wrap: wrap;
+}
+
+.operation-buttons button,
+.boolean-buttons button {
+    border: none;
+
+    padding: 14px 20px;
+
+    background: #315b20;
+    color: white;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.operation-buttons button:hover,
+.boolean-buttons button:hover {
+    transform: translateY(-2px);
+    background: #4d762e;
+}
+
+.operation-buttons small {
+    display: block;
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.logic-result,
+.boolean-result,
+.ifelse-result {
+    padding: 18px;
+
+    background: #f3f6e9;
+
+    border-radius: 12px;
+
+    font-weight: bold;
+
+    color: #39552c;
+}
+
+
+/* ================= BOOLEAN ================= */
+
+.boolean-controls {
+    display: flex;
+    gap: 30px;
+
+    margin: 20px 0;
+}
+
+.boolean-controls label {
+    cursor: pointer;
+}
+
+.boolean-controls input {
+    margin-right: 8px;
+}
+
+
+/* ================= IF ELSE ================= */
+
+.ifelse-form {
+    display: flex;
+    gap: 12px;
+
+    margin: 20px 0;
+}
+
+.ifelse-form input {
+    width: 180px;
+
+    padding: 12px;
+
+    border: 1px solid #ccd5bd;
+
+    border-radius: 10px;
+
+    font-size: 16px;
+}
+
+.ifelse-form button {
+    border: none;
+
+    padding: 12px 20px;
+
+    background: #bd8b08;
+    color: white;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+
+/* ================= CART ================= */
+
+.cart-section {
+    background: #fffdf3;
+}
+
+.cart-container {
+    display: grid;
+
+    grid-template-columns: 1.5fr 1fr;
+
+    gap: 30px;
+
+    align-items: start;
+}
+
+.cart-items {
+    min-height: 200px;
+}
+
+.empty-cart {
+    padding: 50px;
+
+    text-align: center;
+
+    background: white;
+
+    border-radius: 20px;
+
+    color: #888;
+}
+
+.cart-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    background: white;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    margin-bottom: 12px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.cart-item img {
+    width: 80px;
+    height: 80px;
+
+    object-fit: contain;
+
+    background: #f3f6e8;
+
+    border-radius: 12px;
+}
+
+.cart-item-info {
+    flex: 1;
+}
+
+.cart-item-info h4 {
+    color: #304a22;
+}
+
+.cart-price {
+    color: #bd8b08;
+    font-weight: bold;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-control button {
+    width: 30px;
+    height: 30px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #315b20;
+    color: white;
+
+    cursor: pointer;
+}
+
+.remove-btn {
+    border: none;
+
+    background: #d94d35;
+    color: white;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+/* ================= SUMMARY ================= */
+
+.cart-summary {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.08);
+
+    position: sticky;
+    top: 100px;
+}
+
+.cart-summary h3 {
+    margin-bottom: 20px;
+    color: #304a22;
+}
+
+.summary-row,
+.summary-total {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #eee;
+}
+
+.discount-row strong {
+    color: #d94d35;
+}
+
+.summary-total {
+    border: none;
+
+    font-size: 22px;
+
+    color: #315b20;
+
+    margin-top: 10px;
+}
+
+.checkout-btn {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    background: #315b20;
+    color: white;
+
+    border-radius: 12px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    margin-top: 15px;
+}
+
+.checkout-btn:hover {
+    background: #4b722d;
+}
+
+
+/* ================= FOOTER ================= */
+
+footer {
+    text-align: center;
+
+    padding: 50px 20px;
+
+    background: #24391c;
+
+    color: white;
+}
+
+.footer-logo {
+    width: 80px;
+    height: 80px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    margin-bottom: 10px;
+}
+
+footer h3 {
+    font-size: 23px;
+}
+
+footer p {
+    color: #d7e0d0;
+}
+
+.footer-small {
+    font-size: 12px;
+    margin-top: 15px;
+    opacity: 0.7;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .header {
+        flex-direction: column;
+        gap: 12px;
     }
-);
+
+    nav {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        flex-direction: column;
+
+        text-align: center;
+
+        padding-top: 50px;
+    }
+
+    .hero-content,
+    .hero-fruit {
+        width: 100%;
+    }
+
+    .hero-fruit {
+        margin-top: 30px;
+    }
+
+    .hero-fruit img {
+        max-width: 400px;
+    }
+
+    .logic-container,
+    .cart-container {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-summary {
+        position: static;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .brand-text h1 {
+        font-size: 18px;
+    }
+
+    .brand-text p {
+        font-size: 11px;
+    }
+
+    .logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    nav a {
+        font-size: 13px;
+    }
+
+    .section,
+    .logic-section,
+    .cart-section {
+        padding: 60px 5%;
+    }
+
+    .section-title h2 {
+        font-size: 28px;
+    }
+
+    .hero h2 {
+        font-size: 42px;
+    }
+
+    .boolean-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .ifelse-form {
+        flex-direction: column;
+    }
+
+    .ifelse-form input {
+        width: 100%;
+    }
+
+    .cart-item {
+        flex-wrap: wrap;
+    }
+}
+```
