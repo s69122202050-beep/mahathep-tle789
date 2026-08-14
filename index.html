@@ -1,5 +1,7 @@
+```html
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
 
@@ -10,7 +12,6 @@
         มหาเทพเติ้ล789 | ทุเรียนบ้านสวน by เติ้ลจันรี
     </title>
 
-    <!-- เชื่อมไฟล์ CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -22,8 +23,10 @@
 
         <div class="logo-area">
 
+            <!-- LOGO รูปที่ 2 -->
             <div class="logo">
-                🌳
+                <img src="images/logo.png"
+                     alt="โลโก้ มหาเทพเติ้ล789">
             </div>
 
             <div>
@@ -94,8 +97,13 @@
         </div>
 
 
+        <!-- รูปทุเรียนรูปแรก -->
+
         <div class="hero-fruit">
-            🥭
+
+            <img src="images/durian.png"
+                 alt="ทุเรียนบ้านสวน">
+
         </div>
 
     </section>
@@ -122,7 +130,7 @@
         </div>
 
 
-        <!-- JavaScript จะสร้างสินค้าในส่วนนี้ -->
+        <!-- JavaScript จะสร้างสินค้า -->
 
         <div id="productList"
              class="product-grid">
@@ -216,7 +224,6 @@
 
             <div class="operation-buttons">
 
-
                 <button onclick="setOperation('AND')">
 
                     A ∩ B
@@ -248,7 +255,6 @@
                     </small>
 
                 </button>
-
 
             </div>
 
@@ -304,7 +310,6 @@
 
 
             <div class="boolean-buttons">
-
 
                 <button
                     onclick="booleanOperation('AND')">
@@ -488,8 +493,15 @@
 
     <footer>
 
+        <!-- ใช้ Logo รูปที่ 2 ใน Footer ด้วย -->
+
+        <img src="images/logo.png"
+             alt="Logo"
+             class="footer-logo">
+
+
         <h3>
-            🌳 มหาเทพเติ้ล789
+            มหาเทพเติ้ล789
         </h3>
 
         <p>
@@ -514,4 +526,6 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
+```
