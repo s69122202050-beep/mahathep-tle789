@@ -1,1 +1,517 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        มหาเทพเติ้ล789 | ทุเรียนบ้านสวน by เติ้ลจันรี
+    </title>
+
+    <!-- เชื่อมไฟล์ CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="logo-area">
+
+            <div class="logo">
+                🌳
+            </div>
+
+            <div>
+                <h1>
+                    มหาเทพเติ้ล789
+                </h1>
+
+                <p>
+                    ทุเรียนบ้านสวน by เติ้ลจันรี
+                </p>
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="#home">
+                หน้าแรก
+            </a>
+
+            <a href="#products">
+                สินค้า
+            </a>
+
+            <a href="#logic">
+                Set Logic
+            </a>
+
+            <a href="#cart">
+                🛒 ตะกร้า
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <span class="badge">
+                🌿 ทุเรียนสดจากสวน
+            </span>
+
+            <h2>
+                ทุเรียนบ้านสวน
+                <br>
+
+                <span>
+                    หวาน หอม เนื้อแน่น
+                </span>
+            </h2>
+
+            <p>
+                ทุเรียนคุณภาพจากสวน
+                ทุเรียนบ้านสวน by เติ้ลจันรี
+                คัดคุณภาพก่อนส่งถึงลูกค้า
+            </p>
+
+            <a href="#products" class="btn">
+                🥭 ดูสินค้าทั้งหมด
+            </a>
+
+        </div>
+
+
+        <div class="hero-fruit">
+            🥭
+        </div>
+
+    </section>
+
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <section id="products" class="section">
+
+        <div class="section-title">
+
+            <span>
+                OUR PRODUCTS
+            </span>
+
+            <h2>
+                🥭 รายการทุเรียน
+            </h2>
+
+            <p>
+                เลือกพันธุ์และขนาดทุเรียนที่ต้องการ
+            </p>
+
+        </div>
+
+
+        <!-- JavaScript จะสร้างสินค้าในส่วนนี้ -->
+
+        <div id="productList"
+             class="product-grid">
+        </div>
+
+    </section>
+
+
+    <!-- ================= SET THEORY ================= -->
+
+    <section id="logic"
+             class="logic-section">
+
+        <div class="section-title">
+
+            <span>
+                SET THEORY & BOOLEAN LOGIC
+            </span>
+
+            <h2>
+                🧠 ระบบ Set Logic ร้านทุเรียน
+            </h2>
+
+            <p>
+                ทดลอง Set A และ Set B
+                ด้วย JavaScript
+            </p>
+
+        </div>
+
+
+        <!-- SET A / SET B -->
+
+        <div class="logic-container">
+
+
+            <div class="logic-card">
+
+                <h3>
+                    Set A
+                </h3>
+
+                <p>
+                    สินค้าทุเรียนทั้งหมด
+                </p>
+
+                <div id="setA"
+                     class="set-box">
+
+                    กำลังโหลด Set A...
+
+                </div>
+
+            </div>
+
+
+            <div class="logic-card">
+
+                <h3>
+                    Set B
+                </h3>
+
+                <p>
+                    สินค้าที่มีส่วนลด
+                </p>
+
+                <div id="setB"
+                     class="set-box">
+
+                    กำลังโหลด Set B...
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= SET OPERATION ================= -->
+
+        <div class="operation-box">
+
+            <h3>
+                🔢 การดำเนินการ Set
+            </h3>
+
+            <p>
+                เลือกการทำงานของ Set A และ Set B
+            </p>
+
+
+            <div class="operation-buttons">
+
+
+                <button onclick="setOperation('AND')">
+
+                    A ∩ B
+
+                    <small>
+                        AND / Intersection
+                    </small>
+
+                </button>
+
+
+                <button onclick="setOperation('OR')">
+
+                    A ∪ B
+
+                    <small>
+                        OR / Union
+                    </small>
+
+                </button>
+
+
+                <button onclick="setOperation('NOT')">
+
+                    A - B
+
+                    <small>
+                        Difference
+                    </small>
+
+                </button>
+
+
+            </div>
+
+
+            <div id="logicResult"
+                 class="logic-result">
+
+                เลือก Operation
+                เพื่อดูผลลัพธ์
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BOOLEAN LOGIC ================= -->
+
+        <div class="boolean-box">
+
+            <h3>
+                🔘 Boolean Logic
+            </h3>
+
+            <p>
+                ทดลองค่า TRUE / FALSE
+            </p>
+
+
+            <div class="boolean-controls">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="booleanA">
+
+                    A = TRUE
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="booleanB">
+
+                    B = TRUE
+
+                </label>
+
+            </div>
+
+
+            <div class="boolean-buttons">
+
+
+                <button
+                    onclick="booleanOperation('AND')">
+
+                    A AND B
+
+                </button>
+
+
+                <button
+                    onclick="booleanOperation('OR')">
+
+                    A OR B
+
+                </button>
+
+
+                <button
+                    onclick="booleanOperation('NOT')">
+
+                    NOT A
+
+                </button>
+
+            </div>
+
+
+            <div id="booleanResult"
+                 class="boolean-result">
+
+                ผลลัพธ์ Boolean
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= IF ELSE ================= -->
+
+        <div class="ifelse-box">
+
+            <h3>
+                ⚙️ IF / ELSE ระบบส่วนลด
+            </h3>
+
+            <p>
+                ทดลองจำนวนทุเรียนที่สั่งซื้อ
+            </p>
+
+
+            <div class="ifelse-form">
+
+                <input
+                    type="number"
+                    id="quantityInput"
+                    min="1"
+                    value="1"
+                    placeholder="จำนวนลูก">
+
+
+                <button onclick="checkDiscount()">
+
+                    ตรวจสอบส่วนลด
+
+                </button>
+
+            </div>
+
+
+            <div id="ifElseResult"
+                 class="ifelse-result">
+
+                รอการตรวจสอบ...
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CART ================= -->
+
+    <section id="cart"
+             class="cart-section">
+
+        <div class="section-title">
+
+            <span>
+                SHOPPING CART
+            </span>
+
+            <h2>
+                🛒 ตะกร้าสินค้า
+            </h2>
+
+        </div>
+
+
+        <div class="cart-container">
+
+
+            <!-- รายการสินค้า -->
+
+            <div id="cartItems"
+                 class="cart-items">
+
+                <p class="empty-cart">
+
+                    🛒 ยังไม่มีสินค้าในตะกร้า
+
+                </p>
+
+            </div>
+
+
+            <!-- สรุปยอด -->
+
+            <div class="cart-summary">
+
+                <h3>
+                    สรุปคำสั่งซื้อ
+                </h3>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        ราคาสินค้า
+                    </span>
+
+                    <strong id="subtotal">
+                        0 บาท
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row discount-row">
+
+                    <span>
+                        ส่วนลด
+                    </span>
+
+                    <strong id="discount">
+                        0 บาท
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-total">
+
+                    <span>
+                        ยอดสุทธิ
+                    </span>
+
+                    <strong id="total">
+                        0 บาท
+                    </strong>
+
+                </div>
+
+
+                <button
+                    class="checkout-btn"
+                    onclick="checkout()">
+
+                    🛒 สั่งซื้อสินค้า
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <h3>
+            🌳 มหาเทพเติ้ล789
+        </h3>
+
+        <p>
+            ทุเรียนบ้านสวน by เติ้ลจันรี
+        </p>
+
+        <p class="footer-small">
+
+            HTML + CSS + JavaScript
+            |
+            Set Theory
+            |
+            Boolean Logic
+
+        </p>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="script.js"></script>
+
+</body>
+</html>
