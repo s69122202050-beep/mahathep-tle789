@@ -1,820 +1,963 @@
-```css
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* =========================================
+   ข้อมูลสินค้า
+========================================= */
 
-html {
-    scroll-behavior: smooth;
-}
+const products = [
 
-body {
-    font-family: "Tahoma", "Arial", sans-serif;
-    background: #f6f8ef;
-    color: #26351f;
-    line-height: 1.7;
-}
+    {
+        id: 1,
+        name: "หมอนทอง",
+        category: "หมอนทอง",
+        price: 180,
+        discount: 10,
+        description: "เนื้อหนา หวานมัน กลิ่นหอม"
+    },
+
+    {
+        id: 2,
+        name: "ก้านยาว",
+        category: "ก้านยาว",
+        price: 250,
+        discount: 15,
+        description: "เนื้อละเอียด หวานหอม"
+    },
+
+    {
+        id: 3,
+        name: "ชะนี",
+        category: "ชะนี",
+        price: 160,
+        discount: 0,
+        description: "เนื้อนุ่ม รสหวานมัน"
+    },
+
+    {
+        id: 4,
+        name: "หมอนทองพรีเมียม",
+        category: "หมอนทอง",
+        price: 320,
+        discount: 20,
+        description: "คัดพิเศษ เนื้อแน่นเต็มพู"
+    },
+
+    {
+        id: 5,
+        name: "ชุดทุเรียนรวม",
+        category: "ชุดรวม",
+        price: 500,
+        discount: 25,
+        description: "รวมหลายสายพันธุ์"
+    }
+
+];
 
 
-/* ================= HEADER ================= */
+/* =========================================
+   ตะกร้า
+========================================= */
 
-.header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+let cart =
+    JSON.parse(
+        localStorage.getItem("durianCart")
+    ) || [];
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-    padding: 12px 6%;
+/* =========================================
+   ฟังก์ชันเงิน
+========================================= */
 
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 3px 20px rgba(0, 0, 0, 0.08);
-}
+function formatMoney(number) {
 
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
+    return number.toLocaleString("th-TH");
 
-.logo {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.brand-text h1 {
-    font-size: 22px;
-    color: #31551c;
-}
-
-.brand-text p {
-    font-size: 13px;
-    color: #777;
-}
-
-nav {
-    display: flex;
-    gap: 25px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #304329;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #8b6508;
 }
 
 
-/* ================= HERO ================= */
+/* =========================================
+   ราคาหลังส่วนลด
+========================================= */
 
-.hero {
-    min-height: 650px;
+function salePrice(product) {
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    return product.price -
+        (product.price *
+        product.discount / 100);
 
-    padding: 70px 8%;
+}
 
-    background:
-        linear-gradient(
-            135deg,
-            #edf6d7,
-            #fffde9
+
+/* =========================================
+   แสดงจำนวนสินค้าในตะกร้า
+========================================= */
+
+function updateCartCount() {
+
+    const count =
+        cart.reduce(
+            (sum, item) =>
+                sum + item.quantity,
+            0
         );
-}
-
-.hero-content {
-    width: 48%;
-}
-
-.badge {
-    display: inline-block;
-
-    padding: 8px 18px;
-
-    background: #dbeebc;
-    color: #3b641e;
-
-    border-radius: 30px;
-
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.hero h2 {
-    font-size: clamp(40px, 5vw, 70px);
-    line-height: 1.15;
-    color: #294516;
-    margin-bottom: 20px;
-}
-
-.hero h2 span {
-    color: #bd8b08;
-}
-
-.hero-content p {
-    font-size: 18px;
-    color: #58634f;
-    margin-bottom: 30px;
-}
-
-.btn {
-    display: inline-block;
-
-    padding: 13px 25px;
-
-    background: #315b20;
-    color: white;
-
-    border-radius: 30px;
-
-    text-decoration: none;
-    font-weight: bold;
-
-    box-shadow: 0 8px 20px rgba(49, 91, 32, 0.25);
-
-    transition: 0.3s;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    background: #456f2d;
-}
-
-
-/* ================= HERO FRUIT ================= */
-
-.hero-fruit {
-    width: 48%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hero-fruit img {
-    width: 100%;
-    max-width: 560px;
-
-    height: auto;
-
-    object-fit: contain;
-
-    filter:
-        drop-shadow(0 25px 25px rgba(0, 0, 0, 0.25));
-
-    transition: transform 0.4s ease;
-}
-
-.hero-fruit img:hover {
-    transform: scale(1.04) rotate(1deg);
-}
-
-
-/* ================= SECTION ================= */
-
-.section,
-.logic-section,
-.cart-section {
-    padding: 90px 7%;
-}
-
-.section-title {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.section-title span {
-    color: #a57c12;
-    font-weight: bold;
-    letter-spacing: 2px;
-    font-size: 13px;
-}
-
-.section-title h2 {
-    font-size: 36px;
-    color: #304a22;
-    margin: 8px 0;
-}
-
-.section-title p {
-    color: #777;
-}
-
-
-/* ================= PRODUCTS ================= */
-
-.product-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(230px, 1fr));
-
-    gap: 25px;
-}
-
-.product-card {
-    background: white;
-
-    border-radius: 22px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.08);
-
-    transition: 0.3s;
-
-    position: relative;
-
-    overflow: hidden;
-}
-
-.product-card:hover {
-    transform: translateY(-8px);
-}
-
-.product-image {
-    height: 200px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background: #f3f7e7;
-
-    border-radius: 18px;
-
-    margin-bottom: 18px;
-
-    overflow: hidden;
-}
-
-.product-image img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-}
-
-.product-card h3 {
-    color: #304a22;
-    margin-bottom: 5px;
-}
-
-.product-card p {
-    color: #777;
-    font-size: 14px;
-}
-
-.price {
-    color: #bd8b08;
-    font-size: 22px;
-    font-weight: bold;
-
-    margin: 10px 0;
-}
-
-.discount-badge {
-    position: absolute;
-
-    top: 15px;
-    right: 15px;
-
-    padding: 5px 10px;
-
-    background: #d94d35;
-    color: white;
-
-    border-radius: 20px;
-
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.add-btn {
-    width: 100%;
-
-    padding: 11px;
-
-    border: none;
-
-    background: #315b20;
-    color: white;
-
-    border-radius: 12px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-
-    transition: 0.3s;
-}
-
-.add-btn:hover {
-    background: #4c742f;
-}
-
-
-/* ================= LOGIC ================= */
-
-.logic-section {
-    background: #edf3df;
-}
-
-.logic-container {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 25px;
-
-    margin-bottom: 30px;
-}
-
-.logic-card,
-.operation-box,
-.boolean-box,
-.ifelse-box {
-    background: white;
-
-    padding: 30px;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 7px 25px rgba(0, 0, 0, 0.07);
-
-    margin-bottom: 25px;
-}
-
-.logic-card h3,
-.operation-box h3,
-.boolean-box h3,
-.ifelse-box h3 {
-    color: #315b20;
-    margin-bottom: 8px;
-}
-
-.set-box {
-    margin-top: 15px;
-
-    min-height: 80px;
-
-    padding: 15px;
-
-    background: #f2f6e8;
-
-    border-radius: 12px;
-
-    color: #526442;
-}
-
-
-/* ================= OPERATION ================= */
-
-.operation-buttons,
-.boolean-buttons {
-    display: flex;
-    gap: 12px;
-
-    margin: 20px 0;
-
-    flex-wrap: wrap;
-}
-
-.operation-buttons button,
-.boolean-buttons button {
-    border: none;
 
-    padding: 14px 20px;
 
-    background: #315b20;
-    color: white;
+    document
+        .querySelectorAll("#cartCount")
+        .forEach(element => {
 
-    border-radius: 12px;
+            element.textContent = count;
 
-    cursor: pointer;
+        });
 
-    font-weight: bold;
-
-    transition: 0.3s;
-}
-
-.operation-buttons button:hover,
-.boolean-buttons button:hover {
-    transform: translateY(-2px);
-    background: #4d762e;
-}
-
-.operation-buttons small {
-    display: block;
-    font-size: 10px;
-    opacity: 0.8;
-}
-
-.logic-result,
-.boolean-result,
-.ifelse-result {
-    padding: 18px;
-
-    background: #f3f6e9;
-
-    border-radius: 12px;
-
-    font-weight: bold;
-
-    color: #39552c;
-}
-
-
-/* ================= BOOLEAN ================= */
-
-.boolean-controls {
-    display: flex;
-    gap: 30px;
-
-    margin: 20px 0;
-}
-
-.boolean-controls label {
-    cursor: pointer;
-}
-
-.boolean-controls input {
-    margin-right: 8px;
-}
-
-
-/* ================= IF ELSE ================= */
-
-.ifelse-form {
-    display: flex;
-    gap: 12px;
-
-    margin: 20px 0;
-}
-
-.ifelse-form input {
-    width: 180px;
-
-    padding: 12px;
-
-    border: 1px solid #ccd5bd;
-
-    border-radius: 10px;
-
-    font-size: 16px;
-}
-
-.ifelse-form button {
-    border: none;
-
-    padding: 12px 20px;
-
-    background: #bd8b08;
-    color: white;
-
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    font-weight: bold;
-}
-
-
-/* ================= CART ================= */
-
-.cart-section {
-    background: #fffdf3;
-}
-
-.cart-container {
-    display: grid;
-
-    grid-template-columns: 1.5fr 1fr;
-
-    gap: 30px;
-
-    align-items: start;
-}
-
-.cart-items {
-    min-height: 200px;
-}
-
-.empty-cart {
-    padding: 50px;
-
-    text-align: center;
-
-    background: white;
-
-    border-radius: 20px;
-
-    color: #888;
-}
-
-.cart-item {
-    display: flex;
-
-    align-items: center;
-
-    gap: 15px;
-
-    background: white;
-
-    padding: 18px;
-
-    border-radius: 15px;
-
-    margin-bottom: 12px;
-
-    box-shadow:
-        0 4px 15px rgba(0, 0, 0, 0.06);
-}
-
-.cart-item img {
-    width: 80px;
-    height: 80px;
-
-    object-fit: contain;
-
-    background: #f3f6e8;
-
-    border-radius: 12px;
-}
-
-.cart-item-info {
-    flex: 1;
-}
-
-.cart-item-info h4 {
-    color: #304a22;
-}
-
-.cart-price {
-    color: #bd8b08;
-    font-weight: bold;
-}
-
-.quantity-control {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.quantity-control button {
-    width: 30px;
-    height: 30px;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background: #315b20;
-    color: white;
-
-    cursor: pointer;
-}
-
-.remove-btn {
-    border: none;
-
-    background: #d94d35;
-    color: white;
-
-    padding: 6px 10px;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-}
-
-
-/* ================= SUMMARY ================= */
-
-.cart-summary {
-    background: white;
-
-    padding: 30px;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.08);
-
-    position: sticky;
-    top: 100px;
-}
-
-.cart-summary h3 {
-    margin-bottom: 20px;
-    color: #304a22;
 }
 
-.summary-row,
-.summary-total {
-    display: flex;
 
-    justify-content: space-between;
+/* =========================================
+   บันทึกตะกร้า
+========================================= */
 
-    padding: 12px 0;
+function saveCart() {
 
-    border-bottom: 1px solid #eee;
-}
-
-.discount-row strong {
-    color: #d94d35;
-}
-
-.summary-total {
-    border: none;
-
-    font-size: 22px;
-
-    color: #315b20;
-
-    margin-top: 10px;
-}
-
-.checkout-btn {
-    width: 100%;
-
-    padding: 14px;
-
-    border: none;
-
-    background: #315b20;
-    color: white;
-
-    border-radius: 12px;
-
-    font-size: 17px;
-
-    font-weight: bold;
-
-    cursor: pointer;
+    localStorage.setItem(
+        "durianCart",
+        JSON.stringify(cart)
+    );
 
-    margin-top: 15px;
-}
-
-.checkout-btn:hover {
-    background: #4b722d;
-}
-
-
-/* ================= FOOTER ================= */
-
-footer {
-    text-align: center;
-
-    padding: 50px 20px;
-
-    background: #24391c;
+    updateCartCount();
 
-    color: white;
 }
 
-.footer-logo {
-    width: 80px;
-    height: 80px;
 
-    object-fit: cover;
-
-    border-radius: 50%;
-
-    margin-bottom: 10px;
-}
-
-footer h3 {
-    font-size: 23px;
-}
-
-footer p {
-    color: #d7e0d0;
-}
-
-.footer-small {
-    font-size: 12px;
-    margin-top: 15px;
-    opacity: 0.7;
-}
+/* =========================================
+   แสดงสินค้า
+========================================= */
 
+function displayProducts(
+    category = "ทั้งหมด"
+) {
 
-/* ================= RESPONSIVE ================= */
+    const productList =
+        document.getElementById(
+            "productList"
+        );
 
-@media (max-width: 900px) {
 
-    .header {
-        flex-direction: column;
-        gap: 12px;
+    if (!productList) {
+        return;
     }
 
-    nav {
-        gap: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
 
-    .hero {
-        flex-direction: column;
+    productList.innerHTML = "";
 
-        text-align: center;
 
-        padding-top: 50px;
-    }
+    const filteredProducts =
+        products.filter(product => {
 
-    .hero-content,
-    .hero-fruit {
-        width: 100%;
-    }
+            if (category === "ทั้งหมด") {
 
-    .hero-fruit {
-        margin-top: 30px;
-    }
+                return true;
 
-    .hero-fruit img {
-        max-width: 400px;
-    }
+            }
 
-    .logic-container,
-    .cart-container {
-        grid-template-columns: 1fr;
-    }
+            return product.category === category;
 
-    .cart-summary {
-        position: static;
-    }
+        });
+
+
+    filteredProducts.forEach(product => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "product-card";
+
+
+        card.innerHTML = `
+
+            <div class="product-image">
+
+                <img
+                    src="images/durian.png"
+                    alt="${product.name}"
+                >
+
+            </div>
+
+
+            <span class="category">
+
+                ${product.category}
+
+            </span>
+
+
+            <h3>
+                ${product.name}
+            </h3>
+
+
+            <p>
+                ${product.description}
+            </p>
+
+
+            <div class="price">
+
+                ${
+                    product.discount > 0
+
+                    ?
+
+                    `
+                    <span class="old-price">
+                        ${formatMoney(product.price)}
+                        บาท
+                    </span>
+                    <br>
+                    `
+
+                    :
+
+                    ""
+                }
+
+
+                ${formatMoney(
+                    salePrice(product)
+                )}
+
+                บาท
+
+            </div>
+
+
+            <p>
+
+                ส่วนลด
+                ${product.discount}%
+
+            </p>
+
+
+            <button
+                class="add-cart"
+                onclick="addToCart(${product.id})">
+
+                🛒 เพิ่มลงตะกร้า
+
+            </button>
+
+        `;
+
+
+        productList.appendChild(card);
+
+    });
+
 }
 
 
-@media (max-width: 600px) {
+/* =========================================
+   เพิ่มสินค้า
+========================================= */
 
-    .brand-text h1 {
-        font-size: 18px;
+function addToCart(id) {
+
+    const existing =
+        cart.find(
+            item => item.id === id
+        );
+
+
+    if (existing) {
+
+        existing.quantity++;
+
     }
 
-    .brand-text p {
-        font-size: 11px;
+    else {
+
+        cart.push({
+
+            id: id,
+
+            quantity: 1
+
+        });
+
     }
 
-    .logo {
-        width: 55px;
-        height: 55px;
-    }
 
-    nav a {
-        font-size: 13px;
-    }
+    saveCart();
 
-    .section,
-    .logic-section,
-    .cart-section {
-        padding: 60px 5%;
-    }
+    displayCart();
 
-    .section-title h2 {
-        font-size: 28px;
-    }
 
-    .hero h2 {
-        font-size: 42px;
-    }
+    alert(
+        "เพิ่มสินค้าลงตะกร้าแล้ว"
+    );
 
-    .boolean-controls {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .ifelse-form {
-        flex-direction: column;
-    }
-
-    .ifelse-form input {
-        width: 100%;
-    }
-
-    .cart-item {
-        flex-wrap: wrap;
-    }
 }
-```
+
+
+/* =========================================
+   เปลี่ยนจำนวน
+========================================= */
+
+function changeQuantity(
+    id,
+    amount
+) {
+
+    const item =
+        cart.find(
+            item => item.id === id
+        );
+
+
+    if (!item) {
+        return;
+    }
+
+
+    item.quantity += amount;
+
+
+    if (item.quantity <= 0) {
+
+        cart =
+            cart.filter(
+                item => item.id !== id
+            );
+
+    }
+
+
+    saveCart();
+
+    displayCart();
+
+}
+
+
+/* =========================================
+   ลบสินค้า
+========================================= */
+
+function removeFromCart(id) {
+
+    cart =
+        cart.filter(
+            item => item.id !== id
+        );
+
+
+    saveCart();
+
+    displayCart();
+
+}
+
+
+/* =========================================
+   แสดงตะกร้า
+========================================= */
+
+function displayCart() {
+
+    const cartItems =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    if (!cartItems) {
+        return;
+    }
+
+
+    if (cart.length === 0) {
+
+        cartItems.innerHTML = `
+            <p>
+                🛒 ยังไม่มีสินค้าในตะกร้า
+            </p>
+        `;
+
+        document.getElementById(
+            "subtotal"
+        ).textContent = "0 บาท";
+
+        document.getElementById(
+            "discount"
+        ).textContent = "0 บาท";
+
+        document.getElementById(
+            "total"
+        ).textContent = "0 บาท";
+
+        return;
+
+    }
+
+
+    cartItems.innerHTML = "";
+
+
+    let subtotal = 0;
+
+    let discount = 0;
+
+
+    cart.forEach(item => {
+
+        const product =
+            products.find(
+                p => p.id === item.id
+            );
+
+
+        const normalPrice =
+            product.price *
+            item.quantity;
+
+
+        const finalPrice =
+            salePrice(product) *
+            item.quantity;
+
+
+        subtotal += normalPrice;
+
+        discount +=
+            normalPrice - finalPrice;
+
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.className =
+            "cart-item";
+
+
+        div.innerHTML = `
+
+            <img
+                src="images/durian.png"
+                alt="${product.name}"
+            >
+
+
+            <div class="cart-info">
+
+                <strong>
+                    ${product.name}
+                </strong>
+
+                <br>
+
+                ${formatMoney(
+                    salePrice(product)
+                )}
+
+                บาท
+
+            </div>
+
+
+            <div class="qty">
+
+                <button
+                    onclick="changeQuantity(
+                        ${product.id},
+                        -1
+                    )">
+
+                    −
+
+                </button>
+
+
+                ${item.quantity}
+
+
+                <button
+                    onclick="changeQuantity(
+                        ${product.id},
+                        1
+                    )">
+
+                    +
+
+                </button>
+
+            </div>
+
+
+            <button
+                class="delete"
+                onclick="removeFromCart(
+                    ${product.id}
+                )">
+
+                ลบ
+
+            </button>
+
+        `;
+
+
+        cartItems.appendChild(div);
+
+    });
+
+
+    const total =
+        subtotal - discount;
+
+
+    document.getElementById(
+        "subtotal"
+    ).textContent =
+        formatMoney(subtotal)
+        + " บาท";
+
+
+    document.getElementById(
+        "discount"
+    ).textContent =
+        "-" +
+        formatMoney(discount)
+        + " บาท";
+
+
+    document.getElementById(
+        "total"
+    ).textContent =
+        formatMoney(total)
+        + " บาท";
+
+}
+
+
+/* =========================================
+   สั่งซื้อ
+========================================= */
+
+function checkout() {
+
+    if (cart.length === 0) {
+
+        alert(
+            "กรุณาเลือกสินค้าก่อนสั่งซื้อ"
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "สั่งซื้อสำเร็จ!"
+    );
+
+
+    cart = [];
+
+
+    saveCart();
+
+    displayCart();
+
+}
+
+
+/* =========================================
+   SET THEORY
+========================================= */
+
+function displaySets() {
+
+    const setA =
+        document.getElementById(
+            "setA"
+        );
+
+
+    const setB =
+        document.getElementById(
+            "setB"
+        );
+
+
+    if (!setA || !setB) {
+        return;
+    }
+
+
+    /*
+        Set A =
+        สินค้าทั้งหมด
+    */
+
+    const A =
+        products.map(
+            product => product.id
+        );
+
+
+    /*
+        Set B =
+        สินค้าที่มีส่วนลด
+    */
+
+    const B =
+        products
+            .filter(
+                product =>
+                    product.discount > 0
+            )
+            .map(
+                product =>
+                    product.id
+            );
+
+
+    setA.innerHTML =
+        createSetText(A);
+
+
+    setB.innerHTML =
+        createSetText(B);
+
+}
+
+
+/* =========================================
+   แปลง Set เป็นข้อความ
+========================================= */
+
+function createSetText(ids) {
+
+    return `{
+
+        ${
+            ids.map(id => {
+
+                const product =
+                    products.find(
+                        p => p.id === id
+                    );
+
+                return product.name;
+
+            }).join(", ")
+
+        }
+
+    }`;
+
+}
+
+
+/* =========================================
+   SET AND / OR / NOT
+========================================= */
+
+function setOperation(operation) {
+
+    const A =
+        products.map(
+            product => product.id
+        );
+
+
+    const B =
+        products
+            .filter(
+                product =>
+                    product.discount > 0
+            )
+            .map(
+                product =>
+                    product.id
+            );
+
+
+    let result = [];
+
+
+    /* AND = Intersection */
+
+    if (operation === "AND") {
+
+        result =
+            A.filter(
+                id => B.includes(id)
+            );
+
+    }
+
+
+    /* OR = Union */
+
+    if (operation === "OR") {
+
+        result =
+            [
+                ...new Set(
+                    [...A, ...B]
+                )
+            ];
+
+    }
+
+
+    /* NOT / Difference */
+
+    if (operation === "NOT") {
+
+        result =
+            A.filter(
+                id => !B.includes(id)
+            );
+
+    }
+
+
+    const resultBox =
+        document.getElementById(
+            "setResult"
+        );
+
+
+    resultBox.innerHTML = `
+
+        Operation:
+
+        <strong>
+            ${operation}
+        </strong>
+
+        <br><br>
+
+        ${createSetText(result)}
+
+    `;
+
+}
+
+
+/* =========================================
+   BOOLEAN LOGIC
+========================================= */
+
+function booleanOperation(
+    operation
+) {
+
+    const A =
+        document.getElementById(
+            "booleanA"
+        ).checked;
+
+
+    const B =
+        document.getElementById(
+            "booleanB"
+        ).checked;
+
+
+    let result;
+
+
+    /*
+        AND
+    */
+
+    if (operation === "AND") {
+
+        result =
+            A && B;
+
+    }
+
+
+    /*
+        OR
+    */
+
+    if (operation === "OR") {
+
+        result =
+            A || B;
+
+    }
+
+
+    /*
+        NOT
+    */
+
+    if (operation === "NOT") {
+
+        result =
+            !A;
+
+    }
+
+
+    const resultBox =
+        document.getElementById(
+            "booleanResult"
+        );
+
+
+    resultBox.innerHTML = `
+
+        ${operation}
+
+        =
+
+        <strong>
+            ${result ? "TRUE" : "FALSE"}
+        </strong>
+
+    `;
+
+}
+
+
+/* =========================================
+   IF / ELSE ส่วนลด
+========================================= */
+
+function checkDiscount() {
+
+    const quantity =
+        Number(
+            document.getElementById(
+                "quantityInput"
+            ).value
+        );
+
+
+    let discountText;
+
+
+    /*
+        IF / ELSE
+    */
+
+    if (quantity >= 10) {
+
+        discountText =
+            "ได้รับส่วนลด 20%";
+
+    }
+
+    else if (quantity >= 5) {
+
+        discountText =
+            "ได้รับส่วนลด 10%";
+
+    }
+
+    else if (quantity >= 3) {
+
+        discountText =
+            "ได้รับส่วนลด 5%";
+
+    }
+
+    else {
+
+        discountText =
+            "ยังไม่มีส่วนลด";
+
+    }
+
+
+    document.getElementById(
+        "ifElseResult"
+    ).innerHTML = `
+
+        จำนวนที่สั่ง:
+
+        <strong>
+            ${quantity} ลูก
+        </strong>
+
+        <br>
+
+        ${discountText}
+
+    `;
+
+}
+
+
+/* =========================================
+   เริ่มต้นเว็บไซต์
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        displayProducts();
+
+        displayCart();
+
+        displaySets();
+
+        updateCartCount();
+
+
+        /*
+            ปุ่มหมวดหมู่
+        */
+
+        document
+            .querySelectorAll(
+                ".filter"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        document
+                            .querySelectorAll(
+                                ".filter"
+                            )
+                            .forEach(
+                                btn =>
+                                    btn.classList
+                                    .remove(
+                                        "active"
+                                    )
+                            );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        displayProducts(
+                            this.dataset.category
+                        );
+
+                    }
+                );
+
+            });
+
+    }
+);
